@@ -1,39 +1,39 @@
-**[Introduction](#introduction) 2**
+**[Introduction](#introduction)**
 
-**[Requirements](#requirements) 2**
+**[Requirements](#requirements)**
 
-**[API Specification](#api-specification) 2**
+**[API Specification](#api-specification)**
 
-**[Step by step - Integration](#step-by-step---integration) 2**
+**[Step by step - Integration](#step-by-step---integration)**
 
-> [Updating the Endpoint](#updating-the-endpoint) 2
+> [Updating the Endpoint](#updating-the-endpoint)
 >
 > [Generating the QR Code and Connecting to the
-> Passenger](#generating-the-qr-code-and-connecting-to-the-passenger) 3
+> Passenger](#generating-the-qr-code-and-connecting-to-the-passenger)
 >
 > [Receiving the passenger
-> information](#receiving-the-passenger-information) 8
+> information](#receiving-the-passenger-information)
 >
 > [Sending Test Results as Verifiable
-> Credentials](#sending-test-results-as-verifiable-credentials) 12
+> Credentials](#sending-test-results-as-verifiable-credentials)
 
-**[Integration types](#integration-types) 24**
+**[Integration types](#integration-types)**
 
-**[Option 1 - Dynamic QR codes](#option-1---dynamic-qr-codes) 24**
+**[Option 1 - Dynamic QR codes](#option-1---dynamic-qr-codes)**
 
-> [High level sequence](#high-level-sequence) 25
+> [High level sequence](#high-level-sequence)
 
-**[Option 2 - App deeplink](#option-2---app-deeplink) 26**
+**[Option 2 - App deeplink](#option-2---app-deeplink)**
 
-> [High level sequence](#high-level-sequence-1) 27
+> [High level sequence](#high-level-sequence-1)
 >
-> [Constructing the App deeplink](#constructing-the-app-deeplink) 28
+> [Constructing the App deeplink](#constructing-the-app-deeplink)
 
-**[Option 3 - Static QR codes](#option-3---static-qr-codes) 29**
+**[Option 3 - Static QR codes](#option-3---static-qr-codes)**
 
-> [High level sequence](#high-level-sequence-2) 29
+> [High level sequence](#high-level-sequence-2)
 
-**[Useful links](#useful-links) 32**
+**[Useful links](#useful-links)**
 
 Introduction
 ============
@@ -211,39 +211,25 @@ x-api-key: <apiKey>
 >
 > For nonPROD/DEMO, you can have following instead:
 >
-> "proof_attrs": [
->
+> ```json
+>"proof_attrs": [
 > ​    {
->
 > ​     "name": "givenNames",
->
 > ​     "restrictions": [],
->
 > ​     "self_attest_allowed": true
->
 > ​    },
->
 > ​    {
->
 > ​     "name": "lastName",
->
 > ​     "restrictions": [],
->
 > ​     "self_attest_allowed": true
->
 > ​    },
->
 > ​    {
->
 > ​     "name": "number",
->
 > ​     "restrictions": [],
->
 > ​     "self_attest_allowed": true
->
 > ​    } 
->
 > ]
+>```
 
 
 
@@ -394,63 +380,41 @@ Response:
 
 > **NOTE:**
 >
-> later date and scans the QR code, their Travel Pass app will recognise that is already has a connection with the lab, and you’ll receive following responses to confirm it is a returning user:
+> Message with "@type": "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/present-proof/1.0/presentation-result" means that end user has shared their personal information, Given names, Last name and Passport number with the LabApp
 >
+>~thread/thid (8caf39be-0dbf-480d-b3c0-a778fa459915) contains the threadId from the original QR code request.
+>
+>If the same user returns for a second test at a later date and scans the QR code, their Travel Pass app will recognise that is already has a connection with the lab, and you’ll receive following responses to confirm it is a returning user:
+>```json
 > {
->
 > ​    "relationship": "7tQVqSUNUT5YHBSzB58vtX",
->
 > ​    "~thread": {
->
 > ​        "thid": "d0150e86-7948-4c7c-a0bd-3719d1301ec1",
->
 > ​        "pthid": "6giFunG-i7jUGLLAV-u7jpczH4V-mJ2zoDyok-pXr83a7ABofaF7eaD7iw8dTK8VTcCLmw7xfCzBzYNeSgX4afdS7yYX7UBcsdeGDZiKFisJdMc7KVx",
->
 > ​        "sender_order": 0,
->
 > ​        "received_orders": {
->
 > ​            "PakAz4MeKBeoA9hN31JNP1": 0
->
 > ​        }
->
 > ​    },
->
 > ​    "@type": "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/out-of-band/1.0/relationship-reused",
->
 > ​    "@id": "2bc7202b-0350-4dbe-9caa-7445e0eeef2a"
->
 > }
->
 > {
->
 > ​    "protoRefStr": "present-proof[1.0]",
->
 > ​    "fromRelationship": "5tQRqSTNUT5BHBszB78vYc",
->
 > ​    "toRelationship": "7tQVqSUNUT5YHBSzB58vtX",
->
 > ​    "threadId": "8caf39be-0dbf-480d-b3c0-a778fa459915",
->
 > ​    "@type": "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/out-of-band/1.0/move-protocol",
->
 > ​    "@id": "b3a6ba95-573a-45cc-b445-4c42006cd98b",
->
 > ​    "~thread": {
->
 > ​        "thid": "d0150e86-7948-4c7c-a0bd-3719d1301ec1",
->
 > ​        "sender_order": 0,
->
 > ​        "received_orders": {
->
 > ​            "PakAz4MeKBeoA9hN31JNP1": 0
->
 > ​        }
->
 > ​    }
->
 > }
+>```
 
 Once the end user has shared their Given names, Last name and Passport number with the Lab, you can process that information in your own systems in order to assign this user some unique identifier that uniquely identifies a user and test they are taking. That can be a booking reference number or a swab serial number or anything else that your lab uses to uniquely identify the collected sample with a person.
 
