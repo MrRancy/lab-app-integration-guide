@@ -1,0 +1,62 @@
+<div class="container h-100">
+    <div class="d-flex align-items-center justify-content-center">
+      <div class="row mt-5">
+        <form class="green p-5" method="POST" action="/send-test-results">
+          <div class="mb-3">
+            <label for="test_sample_did" class="form-label">Test Sample Id</label>
+            <select required id="test_sample_did" name="test_sample_did" class="form-select green">
+                <option disabled>Find Test Result Id</option>
+                <% for (const [key, value] of testSamplesMap) { %>
+                    <option value ="<%= value.did+" "+value.taken_date+" "+key %>" > 
+                        <%= key %> </option>
+                <% } %>
+            </select>
+            <label for="test_method" class="form-label">Test Method</label>
+            <select required id="test_method" name="test_method" class="form-select green">
+                <option selected disabled>Test Method</option>
+                <option value="Oralswab"> Oralswab </option>
+                <option value="Nasalswab"> Nasalswab </option>
+                <option value="Nasopharyngealswab"> Nasopharyngealswab </option>
+                <option value="Saliva"> Saliva </option>
+                <option value="Throat"> Throat </option>
+            </select>
+            <label for="lab_name" class="form-label">Lab Name</label>
+            <input required type="text" class="form-control green" id="lab_name" name="lab_name">
+            <label for="lab_code" class="form-label">Lab Code</label>
+            <input required type="text" class="form-control green" id="lab_code" name="lab_code">
+            <label for="test_language" class="form-label">Test Language</label>
+            <select required id="test_language" name="test_language" class="form-select green">
+                <option selected disabled>Test Language</option>
+                <option value="EN"> EN </option>
+                <option value="FR"> FR </option>
+                <option value="DE"> DE </option>
+            </select>
+            <label for="test_type" class="form-label">Test Type</label>
+            <select required id="test_type" name="test_type" class="form-select green">
+                <option selected disabled>Test Type</option>
+                <option value="Antibodytest"> Antibodytest </option>
+                <option value="COVID-19PCR"> COVID-19PCR </option>
+                <option value="DDPCR"> DDPCR </option>
+                <option value="SARS-CoV-2test"> SARS-CoV-2test </option>
+            </select>
+            <label for="test_technique" class="form-label">Test Technique</label>
+            <select required id="test_technique" name="test_technique" class="form-select green">
+                <option selected disabled>Test Technique</option>
+                <option value="Molecular"> Molecular </option>
+                <option value="Antigen"> Antigen </option>
+                <option value="Antibody"> Antibody </option>
+            </select>
+            <label for="test_result" class="form-label">Test Result</label>
+            <select required id="test_result" name="test_result" class="form-select mt-1 green">
+                <option selected disabled>Test Result</option>
+                <option value="Positive"> Positive </option>
+                <option value="Negative"> Negative </option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary btn-lg green_btn start-50">
+            Send Test Result
+        </button>
+         </form>
+      </div>
+    </div>
+</div>
