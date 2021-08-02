@@ -384,7 +384,7 @@ Response:
 >
 >~thread/thid (8caf39be-0dbf-480d-b3c0-a778fa459915) contains the threadId from the original QR code request.
 >
->If the same user returns for a second test at a later date and scans the QR code, their Travel Pass app will recognise that is already has a connection with the lab, and you’ll receive following responses to confirm it is a returning user:
+If the same user returns for a second test at a later date and scans the QR code, their Travel Pass app will recognise that is already has a connection with the lab, and you’ll receive following responses to confirm it is a returning user:
 >```json
 > {
 > ​    "relationship": "7tQVqSUNUT5YHBSzB58vtX",
@@ -442,10 +442,11 @@ x-api-key: <apiKey>
   "cred_def_id": "RJKT4MttvW1U3JXDR3V1mE:3:CL:179684:latest",
   "comment": "COVID-19 Test",
   "credential_values": {
-        "takenDate":"2021-03-30T14:37:13Z",      "resultDate":"2021-03-31T16:35:44Z",
+        "takenDate":"2021-03-30T14:37:13Z",     
+        "resultDate":"2021-03-31T16:35:44Z",
         "testMethod": "Oralswab",
         "labName":"IATALabName",
-         "labCode":"IATALabCode",
+        "labCode":"IATALabCode",
         "testLanguage":"EN",
         "testType":"PCR",
         "testTechnique":"Molecular",
@@ -471,7 +472,9 @@ x-api-key: <apiKey>
 >
 > resultDate should be universal time when the the test result was completed
 >
-> testMethod is one of following values: [Oralswab, Nasalswab, Nasopharyngealswab, Saliva, Throat]testTecnhique is one of the following values: [Molecular, Antibody, Antigen]
+> testMethod is one of following values: [Oralswab, Nasalswab, Nasopharyngealswab, Oropharyngealswab, Nasalandthroatswab, Nasopharyngealandoropharyngealswab Saliva, Throat]
+> 
+> testTecnhique is one of the following values: [Molecular, Antibody, Antigen]
 >
 > testLanguage is one of the following values: [EN, FR, DE, IT,...] and other ISO2 country code.
 >
