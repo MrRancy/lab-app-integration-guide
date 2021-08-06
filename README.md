@@ -8,14 +8,13 @@
 
 > [Updating the Endpoint](#updating-the-endpoint)
 >
-> [Generating the QR Code and Connecting to the
-> Passenger](#generating-the-qr-code-and-connecting-to-the-passenger)
+> [Generating the QR Code and Connecting to the Passenger](#generating-the-qr-code-and-connecting-to-the-passenger)
 >
-> [Receiving the passenger
-> information](#receiving-the-passenger-information)
+> [Receiving the passenger information](#receiving-the-passenger-information)
 >
-> [Sending Test Results as Verifiable
-> Credentials](#sending-test-results-as-verifiable-credentials)
+> [Sending Test Results as Verifiable Credentials](#sending-test-results-as-verifiable-credentials)
+>
+> [Returning user scenario](#returning-user-scenario)
 
 **[Integration types](#integration-types)**
 
@@ -384,37 +383,6 @@ Response:
 >
 >~thread/thid (8caf39be-0dbf-480d-b3c0-a778fa459915) contains the threadId from the original QR code request.
 >
-If the same user returns for a second test at a later date and scans the QR code, their Travel Pass app will recognise that is already has a connection with the lab, and you’ll receive following responses to confirm it is a returning user:
->```json
-> {
-> ​    "relationship": "7tQVqSUNUT5YHBSzB58vtX",
-> ​    "~thread": {
-> ​        "thid": "d0150e86-7948-4c7c-a0bd-3719d1301ec1",
-> ​        "pthid": "6giFunG-i7jUGLLAV-u7jpczH4V-mJ2zoDyok-pXr83a7ABofaF7eaD7iw8dTK8VTcCLmw7xfCzBzYNeSgX4afdS7yYX7UBcsdeGDZiKFisJdMc7KVx",
-> ​        "sender_order": 0,
-> ​        "received_orders": {
-> ​            "PakAz4MeKBeoA9hN31JNP1": 0
-> ​        }
-> ​    },
-> ​    "@type": "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/out-of-band/1.0/relationship-reused",
-> ​    "@id": "2bc7202b-0350-4dbe-9caa-7445e0eeef2a"
-> }
-> {
-> ​    "protoRefStr": "present-proof[1.0]",
-> ​    "fromRelationship": "5tQRqSTNUT5BHBszB78vYc",
-> ​    "toRelationship": "7tQVqSUNUT5YHBSzB58vtX",
-> ​    "threadId": "8caf39be-0dbf-480d-b3c0-a778fa459915",
-> ​    "@type": "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/out-of-band/1.0/move-protocol",
-> ​    "@id": "b3a6ba95-573a-45cc-b445-4c42006cd98b",
-> ​    "~thread": {
-> ​        "thid": "d0150e86-7948-4c7c-a0bd-3719d1301ec1",
-> ​        "sender_order": 0,
-> ​        "received_orders": {
-> ​            "PakAz4MeKBeoA9hN31JNP1": 0
-> ​        }
-> ​    }
-> }
->```
 
 Once the end user has shared their Given names, Last name and Passport number with the Lab, you can process that information in your own systems in order to assign this user some unique identifier that uniquely identifies a user and test they are taking. That can be a booking reference number or a swab serial number or anything else that your lab uses to uniquely identify the collected sample with a person.
 
@@ -456,7 +424,6 @@ x-api-key: <apiKey>
   "by_invitation": false,
   "auto_issue": true,
   "price": 0}
-
 ```
 
 > **NOTE:**
@@ -600,6 +567,80 @@ After you have sent the test results, you can delete all data from your persiste
 1.  You need to resend the test results
 
 2.  To handle the same user returning to take another test
+
+Returning user scenario
+-----------------------
+In the case of the returning user, one that has used their Travel Pass app with your Lab before, the responses that you'll receive on the webhook are going to be slightly different because user's Travel Pass app will recognise that it already has a secure connection with the your Lab from before, and it will use that previous secure connection to send the data.
+
+Generating the QR code is going to be the same as in the case of first time user. Let's say that Create Relationship has returned following for myDID (e.g. 7tQVqSUNUT5YHBSzB58vtX) as a decentralized identifier for this end user. The responses that you'll receive on the webhook for receiving the passenger data going for returning user are going to look like this:
+
+```json
+ {
+ ​    "relationship": "5tQRqSTNUT5BHBszB78vYc",
+ ​    "~thread": {
+ ​        "thid": "d0150e86-7948-4c7c-a0bd-3719d1301ec1",
+ ​        "pthid": "6giFunG-i7jUGLLAV-u7jpczH4V-mJ2zoDyok-pXr83a7ABofaF7eaD7iw8dTK8VTcCLmw7xfCzBzYNeSgX4afdS7yYX7UBcsdeGDZiKFisJdMc7KVx",
+ ​        "sender_order": 0,
+ ​        "received_orders": {
+ ​            "PakAz4MeKBeoA9hN31JNP1": 0
+ ​        }
+ ​    },
+ ​    "@type": "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/out-of-band/1.0/relationship-reused",
+ ​    "@id": "2bc7202b-0350-4dbe-9caa-7445e0eeef2a"
+ }
+
+ {
+ ​    "protoRefStr": "present-proof[1.0]",
+ ​    "fromRelationship": "7tQVqSUNUT5YHBSzB58vtX",
+ ​    "toRelationship": "5tQRqSTNUT5BHBszB78vYc",
+ ​    "threadId": "8caf39be-0dbf-480d-b3c0-a778fa459915",
+ ​    "@type": "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/out-of-band/1.0/move-protocol",
+ ​    "@id": "b3a6ba95-573a-45cc-b445-4c42006cd98b",
+ ​    "~thread": {
+ ​        "thid": "d0150e86-7948-4c7c-a0bd-3719d1301ec1",
+ ​        "sender_order": 0,
+ ​        "received_orders": {
+ ​            "PakAz4MeKBeoA9hN31JNP1": 0
+ ​        }
+ ​    }
+ }
+```
+> **NOTE:**
+>
+> Message with "@type": "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/out-of-band/1.0/relationship-reused" means that the previous connection with DID: 5tQRqSTNUT5BHBszB78vYc was reused
+>
+> Message with "@type": "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/out-of-band/1.0/move-protocol" means that the protocol moved the connection from DID: 7tQVqSUNUT5YHBSzB58vtX to previous connection with DID: 5tQRqSTNUT5BHBszB78vYc.
+>
+This means that once your Lab is prepared to send the test results to the returning user, it should be using the old connection DID: 5tQRqSTNUT5BHBszB78vYc, instead of the new DID: 7tQVqSUNUT5YHBSzB58vtX.
+
+Example of request:
+
+```json
+POST https://vas.pps.evernym.com/api/<Domain DID>/issue-credential/1.0/8caf39be-0dbf-480d-b3c0-a778fa459925
+x-api-key: <apiKey>
+{
+  "@type": "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/issue-credential/1.0/offer",
+  "@id": "e3692334-2447-4184-8c03-314603793b21",
+  "~for_relationship": "5tQRqSTNUT5BHBszB78vYc",
+  "cred_def_id": "RJKT4MttvW1U3JXDR3V1mE:3:CL:179684:latest",
+  "comment": "COVID-19 Test",
+  "credential_values": {
+        "takenDate":"2021-03-30T14:37:13Z",     
+        "resultDate":"2021-03-31T16:35:44Z",
+        "testMethod": "Oralswab",
+        "labName":"IATALabName",
+        "labCode":"IATALabCode",
+        "testLanguage":"EN",
+        "testType":"PCR",
+        "testTechnique":"Molecular",
+        "testFormat":"Digital",
+        "testResult":"Negative"
+  },
+  "by_invitation": false,
+  "auto_issue": true,
+  "price": 0}
+
+```
 
 Integration types
 =================
