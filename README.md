@@ -32,6 +32,8 @@
 
 > [High level sequence](#high-level-sequence-2)
 
+**[Using Connect.Me instead of the Travel Pass](#using-connectme-instead-of-the-iata-travel-pass)**
+
 **[Useful links](#useful-links)**
 
 Introduction
@@ -786,6 +788,39 @@ High level sequence
 
 ![](./media/image1.png)
 
+
+Using Connect.Me Instead of the IATA Travel Pass
+================================================
+
+>**NOTE:** This is only for DEMO environment.
+
+While you don't have access to Staging Travel Pass app, you can use Connect.Me for testing purposes. With this app, you can try both sharing passport data and issuing lab test results.
+
+After you [download](https://www.connect.me/) the app, make sure that you set the toggle to use Staging Net during the setup process.
+
+![](./media/image5.png)
+
+It's important to set the self_attest_allowed option to true in the proof request, as it will enable you to enter passport data manually from Connect.Me- you can use dummy values as well.
+
+```json
+"proof_attrs": [
+ ​    {
+ ​     "name": "givenNames",
+ ​     "restrictions": [],
+ ​     "self_attest_allowed": true
+ ​    },
+ ​    {
+ ​     "name": "lastName",
+ ​     "restrictions": [],
+ ​     "self_attest_allowed": true
+ ​    },
+ ​    {
+ ​     "name": "number",
+ ​     "restrictions": [],
+ ​     "self_attest_allowed": true
+ ​    } 
+ ]
+```
 
 Useful links
 ============
