@@ -69,6 +69,9 @@ You can find a list of common error codes here:
 Step by step - Integration
 ==========================
 
+> **NOTE:**
+> ThreadId in request URL and @id in request body should be randomly generated UUID.
+
 Updating the Endpoint
 ---------------------
 
