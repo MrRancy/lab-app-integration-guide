@@ -4,7 +4,7 @@
 
 **[API Specification](#api-specification)**
 
-**[Step by step - Integration](#step-by-step---integration)**
+**[Step by step - Integration](#step-by-step-integration)**
 
 > [Updating the Endpoint](#updating-the-endpoint)
 >
@@ -18,17 +18,17 @@
 
 **[Integration types](#integration-types)**
 
-**[Option 1 - Dynamic QR codes](#option-1---dynamic-qr-codes)**
+**[Option 1 - Dynamic QR codes](#option-1-dynamic-qr-codes)**
 
 > [High level sequence](#high-level-sequence)
 
-**[Option 2 - App deeplink](#option-2---app-deeplink)**
+**[Option 2 - App deeplink](#option-2-app-deeplink)**
 
 > [High level sequence](#high-level-sequence-1)
 >
 > [Constructing the App deeplink](#constructing-the-app-deeplink)
 
-**[Option 3 - Static QR codes](#option-3---static-qr-codes)**
+**[Option 3 - Static QR codes](#option-3-static-qr-codes)**
 
 > [High level sequence](#high-level-sequence-2)
 
