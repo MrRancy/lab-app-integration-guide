@@ -34,6 +34,10 @@
 
 **[Using Connect.Me instead of the Travel Pass](#using-connectme-instead-of-the-iata-travel-pass)**
 
+**[Using Staging IATA Travel Pass](#using-staging-iata-travel-pass-staging-itp)**
+
+**[Moving to Production](#moving-to-production)**
+
 **[Useful links](#useful-links)**
 
 Introduction
@@ -824,6 +828,39 @@ It's important to set the self_attest_allowed option to true in the proof reques
  ​    } 
  ]
 ```
+
+Using Staging IATA Travel Pass (Staging ITP) 
+============================================
+>**NOTE:** This is only for DEMO environment.
+
+Staging ITP is a Beta version of IATA Travel Pass that can be used for testing on DEMO environment. You can contact IATA to request your Staging ITP access.  
+
+Getting access to Staging ITP
+-----------------------------
+To request access to Staging ITP, please [contact IATA](mailto:vargiakakg@iata.org). In your email please specify an email address of a user who will get access to Staging ITP. Also, please specify if you would like to get Android or iOS access. It is recommended to request only the required one. 
+You will then receive an email to install Firebase and Staging ITP.
+Staging ITP requires an invitation code that will be provided along with the confirmation of access. This code is different for iOS and Android.
+Staging access is provided for 30 days. If you need more time, please request to extend your access.
+
+If you are facing issues moving from Connect.Me to Staging ITP, please contact Evernym support. 
+
+Moving to Production
+====================
+
+Ready to move to production? Below is a sequence you can follow to receive all you need for your development. You can always refer to the [Requirements](#requirements) section of this document.  
+
+**STEP 1** – Get your Lab Name and Lab Code
+
+Lab Name and Lab Code are necessary for issuing Test Results and are assigned by IATA. To have these values assigned to you, please register your lab in IATA’s Lab Network: https://www.iata.org/en/programs/passenger/travel-pass/lab-network/ 
+
+**STEP 2** – Receive your PROD DomainDID, REST API key, and CredDefId
+
+Once Step 1 is completed, please email Evernym support and let us know you’ve registered your lab in IATA’s Lab Network and are ready to move to PROD. Please include your Lab Name in the email.
+You will receive DomainDID, REST API key, and CredDefId from us. 
+
+**STEP 3** – Make changes to your code and environment
+
+Follow [Requirements](#requirements) and [Step by step](#step-by-step-integration) sections of this integration guide and make necessary changes to your code and environment.
 
 Useful links
 ============
