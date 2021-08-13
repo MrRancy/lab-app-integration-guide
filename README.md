@@ -45,6 +45,9 @@ Introduction
 
 This document is intended for laboratories and health clinics participating in the IATA Travel Pass program who want to integrate with LabApp APIs for issuing Covid19 test results as verifiable credentials to IATA Travel Pass users.
 
+> **NOTE:**
+>   Make sure that you watched our Getting started with Lab App and Travel Pass [videos](https://www.evernym.com/labs/).
+
 Requirements 
 ============
 
