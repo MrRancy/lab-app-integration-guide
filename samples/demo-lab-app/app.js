@@ -54,7 +54,9 @@ async function sendVerityRESTMessage (qualifier, msgFamily, msgFamilyVersion, ms
 }
 
 // Store a relationship DID for a user that you're currently connecting to
-let currentRelationshipDID
+let currentRelationshipDID = null
+// Store generated relationship DID
+let relationshipDID
 // Maps containing promises for the started interactions - threadId is used as the map key
 // Update configs
 const updateConfigsMap = new Map()
@@ -119,7 +121,7 @@ async function initialize () {
   await updateConfigs
 }
 // Create relationship key
-async function create_relationship_did () {
+async function createRelationshipDid () {
   // Add logo and lab name here
   const relationshipCreateMessage = {}
   const relThreadId = uuid4()
@@ -134,8 +136,8 @@ async function create_relationship_did () {
 }
 
 // Proof request to identify user
-async function request_proof () {
-  const relationshipDid = await create_relationship_did()
+async function requestProof () {
+  const relationshipDid = await createRelationshipDid()
   const proofMessage = {
     '~for_relationship': relationshipDid,
     name: 'Travel Pass Id',
@@ -143,17 +145,17 @@ async function request_proof () {
       {
         name: 'givenNames',
         restrictions: [],
-        self_attest_allowed: false
+        self_attest_allowed: true
       },
       {
         name: 'lastName',
         restrictions: [],
-        self_attest_allowed: false
+        self_attest_allowed: true
       },
       {
         name: 'number',
         restrictions: [],
-        self_attest_allowed: false
+        self_attest_allowed: true
       }
     ],
     proof_predicates: [],
@@ -163,7 +165,7 @@ async function request_proof () {
   const proofThreadId = uuid4()
   const requestProof =
     new Promise(function (resolve, reject) {
-      proofRequestMap.set(currentRelationshipDID, resolve)
+      proofRequestMap.set(relationshipDID, resolve)
     })
 
   await sendVerityRESTMessage('BzCbsNYhMrjHiqZDTUASHg', 'present-proof', '1.0', 'request', proofMessage, proofThreadId)
@@ -204,11 +206,12 @@ app.post('/user-registration/:id', function (req, res) {
   const did = req.params.id
   const now = new Date().toISOString()
   didTestSampeMap.set(testSampleId, { did: did, taken_date: now })
+  currentRelationshipDID = null
   res.redirect('/')
 })
 // Send proof request
 app.post('/request-proof', async (req, res) => {
-  await request_proof()
+  await requestProof()
   res.redirect('/user-registration/' + currentRelationshipDID)
 })
 // Send test results
@@ -217,8 +220,8 @@ app.get('/send-test-results', async (req, res) => {
 })
 app.post('/send-test-results', async (req, res) => {
   const now = new Date().toISOString()
-  const did_and_time = req.body.test_sample_did
-  const values = did_and_time.split(' ')
+  const didAndTime = req.body.test_sample_did
+  const values = didAndTime.split(' ')
   const credentialData = {
     takenDate: values[1],
     resultDate: now,
@@ -259,6 +262,9 @@ app.post('/send-test-results', async (req, res) => {
 app.post('/webhook', async (req, res) => {
   const message = req.body
   const threadId = message['~thread'] ? message['~thread'].thid : null
+  let retrievedGivenNames
+  let retrievedLastName
+  let retrievedPassportNumber
   console.log('Got message on the webhook')
   console.log(`${ANSII_GREEN}${JSON.stringify(message, null, 4)}${ANSII_RESET}`)
   res.status(202).send('Accepted')
@@ -272,7 +278,7 @@ app.post('/webhook', async (req, res) => {
       break
     case 'did:sov:123456789abcdefghi1234;spec/relationship/1.0/created':
       relCreateMap.get(threadId)(message.did)
-      currentRelationshipDID = message.did
+      relationshipDID = message.did
       break
     case 'did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/connections/1.0/request-received':
       break
@@ -286,12 +292,31 @@ app.post('/webhook', async (req, res) => {
       }
       break
     case 'did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/present-proof/1.0/presentation-result':
-      proofRequestMap.get(currentRelationshipDID)(message.verification_result)
+      if (currentRelationshipDID === null) {
+        currentRelationshipDID = relationshipDID
+      }
+      proofRequestMap.get(relationshipDID)(message.verification_result)
+      if (typeof message.requested_presentation.revealed_attrs.givenNames !== 'undefined') {
+        retrievedGivenNames = message.requested_presentation.revealed_attrs.givenNames.value
+      } else {
+        retrievedGivenNames = message.requested_presentation.self_attested_attrs.givenNames
+      }
+      if (typeof message.requested_presentation.revealed_attrs.lastName !== 'undefined') {
+        retrievedLastName = message.requested_presentation.revealed_attrs.lastName.value
+      } else {
+        retrievedLastName = message.requested_presentation.self_attested_attrs.lastName
+      }
+      if (typeof message.requested_presentation.revealed_attrs.number !== 'undefined') {
+        retrievedPassportNumber = message.requested_presentation.revealed_attrs.number.value
+      } else {
+        retrievedPassportNumber = message.requested_presentation.self_attested_attrs.number
+      }
       userDataMap.set(currentRelationshipDID, {
-        givenNames: message.requested_presentation.revealed_attrs.givenNames.value,
-        lastName: message.requested_presentation.revealed_attrs.lastName.value,
-        passportNumber: message.requested_presentation.revealed_attrs.number.value
+        givenNames: retrievedGivenNames,
+        lastName: retrievedLastName,
+        passportNumber: retrievedPassportNumber
       })
+      relationshipDID = null
       break
     case 'did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/present-proof/1.0/protocol-invitation':
       // generate qr code and save it into file system
@@ -302,6 +327,11 @@ app.post('/webhook', async (req, res) => {
       if (message.description.code === 'rejection') {
         console.log('User rejected to share data')
       }
+      break
+    case 'did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/out-of-band/1.0/move-protocol':
+      break
+    case 'did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/out-of-band/1.0/relationship-reused':
+      currentRelationshipDID = message.relationship
       break
     default:
       console.log(`Unexpected message type ${message['@type']}`)
