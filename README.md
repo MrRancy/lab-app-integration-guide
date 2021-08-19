@@ -840,7 +840,22 @@ Staging ITP is a Beta version of IATA Travel Pass that can be used for testing o
 
 Getting access to Staging ITP
 -----------------------------
-To request access to Staging ITP, please [contact IATA](mailto:vargiakakg@iata.org). In your email please specify an email address of a user who will get access to Staging ITP. Also, please specify if you would like to get Android or iOS access. It is recommended to request only the required one. 
+To request access to Staging ITP, please [contact IATA](mailto:vargiakakg@iata.org). In your email please specify the following:
+
+-   Name of lab
+
+-   Name of a user requesting access
+
+-   Contact at Evernym
+
+-   Email of a user requesting access
+
+-   iOS or Android version- It is recommended to request only one of those.
+
+
+>**NOTE:**  If the email doesn't contain the details listed above, IATA won't process your request.
+
+
 You will then receive an email to install Firebase and Staging ITP.
 Staging ITP requires an invitation code that will be provided along with the confirmation of access. This code is different for iOS and Android.
 Staging access is provided for 30 days. If you need more time, please request to extend your access.
