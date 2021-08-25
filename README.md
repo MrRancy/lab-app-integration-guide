@@ -172,7 +172,17 @@ Example of the response that you’ll receive on your webhook:
 
 Once this is done, another call is made to create and retrieve the shortURL that is displayed as a QR code which passengers scan using their IATA Travel Pass app.
 
-Also embedded in this invitation is a request for the passenger to prove their name and passport number, so this is a combined "connect-and-prove" transaction.
+Also embedded in this invitation is a request for the passenger to provide their "givenNames", "lastName" and passport "number" to you so you can verify you are dealing with the correct passenger. The passenger already has this information in their IATA Travel Pass app from when IATA verified their passport when they first initialised the Travel Pass app.
+
+When the passenger scans the QR code with their Travel Pass app, or clicks the deeplink, their Travel Pass app will ask them to consent to share this data with you. Once they agree, their Travel Pass app will send this data to you (in the "Receiving the passenger information" step), and you can match it with the patient data in your database.
+
+This is known as a combined "connect-and-prove" transaction.
+
+> **NOTE:**
+>
+> ```"givenNames"```, ```"lastName"``` and ```"number"``` are names of the attributes in a passport credential that passengers hold in their Travel Pass App. 
+>
+> In this API call, you're **requesting** a passenger to share the values of these attributes with you. Therefore, the names of these attributes in a request body **must be the same** (i.e. ```"givenNames"```, ```"lastName"``` and ```"number"```).
 
 You'll need to make following call:
 
