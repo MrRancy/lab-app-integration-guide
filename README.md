@@ -6,15 +6,15 @@
 
 **[Step by step - Integration](#step-by-step-integration)**
 
-> [Updating the Endpoint](#updating-the-endpoint)
+> [**Step 1**- Updating the Endpoint](#updating-the-endpoint)
 >
-> [Generating the QR Code and Connecting to the Passenger](#generating-the-qr-code-and-connecting-to-the-passenger)
+> [**Step 2**- Generating the QR Code and Connecting to the Passenger](#generating-the-qr-code-and-connecting-to-the-passenger)
 >
-> [Receiving the passenger information](#receiving-the-passenger-information)
+> [**Step 3**- Receiving the passenger information](#receiving-the-passenger-information)
 >
-> [Sending Test Results as Verifiable Credentials](#sending-test-results-as-verifiable-credentials)
+> [**Step 4**- Sending Test Results as Verifiable Credentials](#sending-test-results-as-verifiable-credentials)
 >
-> [Returning user scenario](#returning-user-scenario)
+> [**Step 5**- Returning user scenario](#returning-user-scenario)
 
 **[Integration types](#integration-types)**
 
@@ -416,6 +416,11 @@ Sending Test Results as Verifiable Credentials
 Once you have the test results available, you'll be ready to send a verifiable credential containing the test result data to the end user using the LabApp API.
 
 In order to send test results to the correct end user's TravelPass app, you'll need to pull out the data test results data from your software based on that unique identifier (which you are using to keep track of the test result for individual users). This should also return the decentralized identifier for that particular user, eg 7tQVqSUNUT5YHBSzB58vtX that you have stored when the end user was registering or taking the test.
+
+> **NOTE:**
+> 
+> In case of a returning user scenario, you will need to use the old relationship-DID stored in the Travel Pass app. For more information see [**Step 5**- Returning user scenario](#returning-user-scenario).
+> Currently, this feature is available only on the iOS version of the Travel Pass app.
 
 Then you'll need to make following API call:
 [https://app.swaggerhub.com/apis/evernym/verity-rest-api/1.0\#/IssueCredential/issueCredential](https://app.swaggerhub.com/apis/evernym/verity-rest-api/1.0#/IssueCredential/issueCredential)
