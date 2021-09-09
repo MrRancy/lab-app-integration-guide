@@ -813,6 +813,22 @@ High level sequence
 
 ![](./media/image1.png)
 
+Constructing URL for Static QR Code
+-----------------------------------
+
+You will need to create a web service with  some <staticURL>. When GET request is sent to that URL, it  will generate an inviteURL from Verity by calling createRelationship and outOfBand ProofRequest and it will redirect to the inviteURL in the response. For more information see [this](https://gitlab.com/evernym/verity/lab-app-integration-guide/-/tree/main/samples/static-qr-code-demo-lab-app) sample app.
+
+A static QR code should be created from the URL in the following format:
+
+For PROD Travel Pass:
+- https://home.prod.travelpassinfra.org/?itp_url=<staticURL>&sender=sender&route=1
+
+For Staging Travel Pass:
+- https://home.staging.travelpassinfra.org/?itp_url=<staticURL>&sender=sender&route=1
+
+Example of the URL:
+- https://home.prod.travelpassinfra.org/?itp_url=https://example.com/generate-proof-request&sender=sender&route=1
+
 
 Using Connect.Me Instead of the IATA Travel Pass
 ================================================
