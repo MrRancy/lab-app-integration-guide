@@ -1,0 +1,12 @@
+.green_btn {
+    background-color: #86c044!important;
+    border-color: #86c044!important;
+    border-radius: 20px!important;
+}
+.green_btn:hover, .green_btn:active, .green_btn:focus{
+    background-color: rgb(148, 198, 88)!important;
+}
+.green{
+    border:1px solid #86c044!important;
+    border-radius: 20px!important;
+}

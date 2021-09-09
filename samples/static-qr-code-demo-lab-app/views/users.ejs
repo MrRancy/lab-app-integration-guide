@@ -1,0 +1,47 @@
+<div class="container h-100">
+    <div class="d-flex align-items-center justify-content-center">
+            <table class="table table-striped">
+                <tr>
+                    <th>DID</th>
+                    <th>Name</th>
+                    <th>Last Name</th>
+                    <th>Passport Number</th>
+                    <th>Test Result Issued</th>
+                    <th>Test Sample Id</th>
+                </tr>
+                <% for (const [key, value] of usersDataMap) { %>
+                    <tr>
+                        <td> <%= key %></td>
+                        <td> <%= value.givenNames %></td>
+                        <td> <%= value.lastName %></td>
+                        <td> <%= value.passportNumber %></td>
+                        <td> <%= value.resultIssued %></td>
+                        <% if(value.testSampleId === null) { %>
+                            <form method="POST" action='/user-registration/<%= key%>'>
+                                <td>
+                                    <input type="text" class="form-control green" id="test_sample" name="test_sample" required>
+                                    <button type="submit" class="btn btn-primary green_btn start-50 mt-1">
+                                        Add test Sample Id
+                                    </button>
+                                </td>
+                            </form>
+                         <% } else { %>
+                            <form method="POST" action='/user-update/<%= key%>'>
+                                <td>
+                                    <input type="text" class="form-control green" id="test_sample" name="test_sample" value="<%= value.testSampleId %>">
+                                    <button type="submit" class="btn btn-primary green_btn start-50 mt-1">
+                                        Change Test Sample Id
+                                    </button>
+                                </td>
+                            </form>
+                       <% } %>
+                    </tr>
+                <% } %>
+            </table>
+        </form>
+    </div>
+    <a href='/' class="btn btn-danger mt-3 float-left">
+        <i class="fas fa-arrow-left"></i>
+        Back
+    </a>
+</div>
