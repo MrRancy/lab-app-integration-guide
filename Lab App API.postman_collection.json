@@ -1,0 +1,206 @@
+{
+	"info": {
+		"_postman_id": "187aa790-d9bd-4dc4-891c-b8905e9ee521",
+		"name": "Lab App API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Step 1: Update Endpoint",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"@id\": \"{{$guid}}\",\n    \"@type\": \"did:sov:123456789abcdefghi1234;spec/configs/0.6/UPDATE_COM_METHOD\",\n    \"comMethod\": {\n        \"id\": \"webhook\",\n        \"type\": 2,\n        \"value\": \"{{Webhook URL}}\",\n        \"packaging\": {\n            \"pkgType\": \"plain\"\n        }\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://vas.pps.evernym.com/api/{{DomainDID}}/configs/0.6/{{$guid}}",
+					"protocol": "https",
+					"host": [
+						"vas",
+						"pps",
+						"evernym",
+						"com"
+					],
+					"path": [
+						"api",
+						"{{DomainDID}}",
+						"configs",
+						"0.6",
+						"{{$guid}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Step 2: Create Relationship DID",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"@id\": \"{{$guid}}\",\n  \"label\": \"{{$Name}}\",\n  \"logoUrl\": \"{{$logoURL}}\",\n  \"@type\": \"did:sov:123456789abcdefghi1234;spec/relationship/1.0/create\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://vas.pps.evernym.com/api/{{DomainDID}}/relationship/1.0/{{$guid}}",
+					"protocol": "https",
+					"host": [
+						"vas",
+						"pps",
+						"evernym",
+						"com"
+					],
+					"path": [
+						"api",
+						"{{DomainDID}}",
+						"relationship",
+						"1.0",
+						"{{$guid}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Step 3: Request Proof",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"@id\": \"{{$guid}}\",\n    \"@type\": \"did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/present-proof/1.0/request\",\n    \"~for_relationship\": \"\",\n    \"name\": \"Travel Pass Id\",\n    \"proof_attrs\": [\n        {\n            \"name\": \"givenNames\",\n            \"restrictions\": [],\n            \"self_attest_allowed\": false\n        },\n        {\n            \"name\": \"lastName\",\n            \"restrictions\": [],\n            \"self_attest_allowed\": false\n        },\n        {\n            \"name\": \"number\",\n            \"restrictions\": [],\n            \"self_attest_allowed\": false\n        }\n    ],\n    \"proof_predicates\": [],\n    \"by_invitation\": true\n}\n// \"~for_relationship\": Add value of \"did\" that you recieved in the message \"@type\": \"did:sov:123456789abcdefghi1234;spec/relationship/1.0/created\" on the webhook.\n// \"restrictions\": If you're testing in PROD environment, add this in the reestrictions {\"cred_def_id\": \"RwSuTfckvgWjXTXwiTVFtP:3:CL:58011:latest\"}, {\"cred_def_id\":\"RwSuTfckvgWjXTXwiTVFtP:3:CL:58011:latest-mrz\"}\n// \"self_attest_allowed\": If you use Connect.Me, set this value to true so you can manually enter the data.",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://vas.pps.evernym.com/api/{{DomainDID}}/present-proof/1.0/{{$guid}}",
+					"protocol": "https",
+					"host": [
+						"vas",
+						"pps",
+						"evernym",
+						"com"
+					],
+					"path": [
+						"api",
+						"{{DomainDID}}",
+						"present-proof",
+						"1.0",
+						"{{$guid}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Step 4: Issue  Test Result Credential",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"@id\": \"{{$guid}}\",\n    \"@type\": \"did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/issue-credential/1.0/offer\",\n    \"~for_relationship\": \"\",\n    \"cred_def_id\": \"{{CredDefId}}\",\n    \"comment\": \"COVID-19 Test\",\n    \"credential_values\": {\n        \"takenDate\": \"2021-03-30T14:37:13Z\",\n        \"resultDate\": \"2021-03-31T16:35:44Z\",\n        \"testMethod\": \"Oralswab\",\n        \"labName\": \"IATALabName\",\n        \"labCode\": \"IATALabCode\",\n        \"testLanguage\": \"EN\",\n        \"testType\": \"PCR\",\n        \"testTechnique\": \"Molecular\",\n        \"testFormat\": \"Digital\",\n        \"testResult\": \"Positive\"\n    },\n    \"by_invitation\": false,\n    \"auto_issue\": true,\n    \"price\": 0\n}\n// \"~for_relationship\": If the user accepted to share data and the secure channel is established, you'll receive the message \"@type\": \"did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/connections/1.0/response-sent\" on your webhook. Add the value of \"myDID\" here. If you receive messages \"did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/out-of-band/1.0/relationship-reused\" and \"did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/out-of-band/1.0/move-protocol\", it means that you already have a connection with this user (this is currently supported only on the iOS version of the Travel Pass app). For a returning user, add value of the \"relationship\" from the \"@type\": \"did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/out-of-band/1.0/relationship-reused\" message.",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://vas.pps.evernym.com/api/{{DomainDID}}/issue-credential/1.0/{{$guid}}",
+					"protocol": "https",
+					"host": [
+						"vas",
+						"pps",
+						"evernym",
+						"com"
+					],
+					"path": [
+						"api",
+						"{{DomainDID}}",
+						"issue-credential",
+						"1.0",
+						"{{$guid}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "apikey",
+		"apikey": [
+			{
+				"key": "key",
+				"value": "X-API-KEY",
+				"type": "string"
+			},
+			{
+				"key": "value",
+				"value": "{{API Key}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "DomainDID",
+			"value": ""
+		},
+		{
+			"key": "CredDefId",
+			"value": ""
+		},
+		{
+			"key": "API Key",
+			"value": ""
+		},
+		{
+			"key": "LogoURL",
+			"value": ""
+		},
+		{
+			"key": "Name",
+			"value": ""
+		},
+		{
+			"key": "Webhook URL",
+			"value": ""
+		}
+	]
+}
