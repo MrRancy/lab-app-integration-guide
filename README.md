@@ -147,9 +147,9 @@ x-api-key: <apiKey>
 ```
 
 > **NOTE:** 
-> threadId (8caf39be-0dbf-480d-b3c0-a778fa459901) is being used to match the response with the request
+> threadId (8caf39be-0dbf-480d-b3c0-a778fa459901) is being used to match the response with the request.
 >
-> Label is used to display name of the Lab
+> Label is used to display name of the Lab.
 
 Example of the response that you’ll receive on your webhook:
 
@@ -222,11 +222,11 @@ x-api-key: <apiKey>
 
 > **NOTE:**
 >
-> threadId (8caf39be-0dbf-480d-b3c0-a778fa459915) is being used to match the response with the request
+> threadId (8caf39be-0dbf-480d-b3c0-a778fa459915) is being used to match the response with the request.
 >
-> “~for_relationship” - you’ll need to use the Did value from the previous response
+> “~for_relationship” - you’ll need to use the Did value from the previous response.
 >
-> “name” - has to be “Travel Pass Id” for the Travel Pass app to work correctly
+> “name” - has to be “Travel Pass Id” for the Travel Pass app to work correctly.
 >
 > “proof_attrs” section has to be like the one in the example for PROD.
 >
@@ -332,7 +332,9 @@ Response:
 >
 > Message with "@type": "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/connections/1.0/request-received" means that the end user has scanned the QR code with their TravelPass app.
 >
-> You will be able to use "myDID": "7tQVqSUNUT5YHBSzB58vtX" to identify response with a session on your front end DID “PakAz4MeKBeoA9hN31JNP1” is the DID (and keys) that the passenger has created specifically for their relationship with the lab.
+> You will be able to use "myDID": "7tQVqSUNUT5YHBSzB58vtX" to identify response with a session on your front end.
+>
+> "DID": “PakAz4MeKBeoA9hN31JNP1” is the DID (and keys) that the passenger has created specifically for their relationship with the lab.
 
 ```json
 {
@@ -358,7 +360,7 @@ Response:
 >
 > Message with "@type": "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/connections/1.0/response-sent" means that LabApp and end user’s Travel Pass app have established a secure and encrypted communication channel.
 >
-> You will be able to use "myDID": "7tQVqSUNUT5YHBSzB58vtX" to identify response with a session on your front end
+> You will be able to use "myDID": "7tQVqSUNUT5YHBSzB58vtX" to identify response with a session on your front end.
 
 ```json
 {
@@ -401,7 +403,7 @@ Response:
 
 > **NOTE:**
 >
-> Message with "@type": "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/present-proof/1.0/presentation-result" means that end user has shared their personal information, Given names, Last name and Passport number with the LabApp
+> Message with "@type": "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/present-proof/1.0/presentation-result" means that end user has shared their personal information, Given names, Last name and Passport number with the LabApp.
 >
 >~thread/thid (8caf39be-0dbf-480d-b3c0-a778fa459915) contains the threadId from the original QR code request.
 >
@@ -715,8 +717,6 @@ High level sequence
 Option 2 - App deeplink
 =======================
 
-**NOTE:** Deeplinks are supported only on the iOS version of ITP app for now.
-
 In this option you are generating and presenting the information needed for creating a unique decentralized identifier DID in the form of an App deeplink. Deeplinks are suitable for mobile browser → app or for app → app use cases. When you have a passenger using his phone to book a test at the lab and you don't have a way to present the QR code in the mobile browser, as an alternative you can present a clickable button, which when clicked will open up the TravelPass app with the request to share the passport data. Another example would be when sending out an email with a clickable button, which when clicked will open up the TravelPass app and display a request to share data.
 
 Deeplinks can be used in following ways:
@@ -816,7 +816,7 @@ High level sequence
 Constructing URL for Static QR Code
 -----------------------------------
 
-You will need to create a web service with  some <staticURL>. When GET request is sent to that URL, it  will generate an inviteURL from Verity by calling createRelationship and outOfBand ProofRequest and it will redirect to the inviteURL in the response. For more information see [this](https://gitlab.com/evernym/verity/lab-app-integration-guide/-/tree/main/samples/static-qr-code-demo-lab-app) sample app.
+You will need to create a web service with some `staticURL`. When GET request is sent to that URL, it  will generate an inviteURL from Verity by calling createRelationship and outOfBand ProofRequest and it will redirect to the inviteURL in the response. For more information see [this](https://gitlab.com/evernym/verity/lab-app-integration-guide/-/tree/main/samples/static-qr-code-demo-lab-app) sample app.
 
 A static QR code should be created from the URL in the following format:
 
